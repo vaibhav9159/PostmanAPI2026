@@ -1,0 +1,223 @@
+{
+  "info": {
+    "_postman_id": "8e6a279f-59c1-4f1b-b94f-3f3c593c7385",
+    "name": "Contacts",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "25769315",
+    "_collection_link": "https://go.postman.co/collection/25769315-8e6a279f-59c1-4f1b-b94f-3f3c593c7385?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const resp = pm.response.json();\n\nconst tokenID = resp.token;\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Token is present in response\", function () {\n    pm.expect(tokenID).to.not.be.null;\n});\n\nconsole.log(\"token generated =====> \"+ tokenID);\n\npm.collectionVariables.set(\"getTokenID\", tokenID);\n\n\npm.test(\"Response time is less than 1500ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(1500);\n});\n\npm.test(\"User object contains expected fields\", function () {\n    pm.expect(resp).to.have.property('user');\n    pm.expect(resp.user).to.have.property('_id');\n    pm.expect(resp.user).to.have.property('email');\n    pm.expect(resp.user.email).to.be.a('string');\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseurl}}/users/login",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "users",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "AddContact",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {\n    pm.response.to.have.status(201);\n});\n\n    const resp = pm.response.json();\n    const getContactID = resp._id;\n    console.log(\"contactID====>\"+ getContactID);\n\n    pm.test(\"Contact ID is not null\", function () {\n        pm.expect(getContactID).to.not.be.null;\n    });\n\n    pm.variables.set(\"contactID\", getContactID);\n\n\n\n"
+            ]
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "function getNumber(){\n   return Math.floor(Math.random() * 10000000000); \n \n}\nconst phoneNumber = getNumber();\nconsole.log(phoneNumber);\npm.variables.set(\"phone\",phoneNumber)\n\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{getTokenID}}"
+          },
+          {
+            "key": "Cookie",
+            "value": "",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"firstName\": \"{{$randomUserName}}\",\n    \"lastName\": \"India\",\n    \"birthdate\": \"1970-01-01\",\n    \"email\": \"kashi@bharat.co.in\",\n    \"phone\": \"{{phone}}\",\n    \"street1\": \"80 ghat\",\n    \"street2\": \"Apartment A\",\n    \"city\": \"Varanasi\",\n    \"stateProvince\": \"UP\",\n    \"postalCode\": \"12345\",\n    \"country\": \"IND\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseurl}}/contacts",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "contacts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetContact",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{getTokenID}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseurl}}/contacts/{{contactID}}",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "contacts",
+            "{{contactID}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetContactsList",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{getTokenID}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseurl}}/contacts",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "contacts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "UpdateContact",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{getTokenID}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"firstName\": \"Tester update\",\n    \"lastName\": \"shambhu\",\n    \"birthdate\": \"1992-02-02\",\n    \"email\": \"amiller@fake.com\",\n    \"phone\": \"8005554242\",\n    \"street1\": \"13 School St.\",\n    \"street2\": \"Apt. 5\",\n    \"city\": \"Washington\",\n    \"stateProvince\": \"UP\",\n    \"postalCode\": \"54321\",\n    \"country\": \"India\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseurl}}/contacts/{{contactID}}",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "contacts",
+            "{{contactID}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DeleteContact",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{getTokenID}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseurl}}/contacts/{{contactID}}",
+          "host": [
+            "{{baseurl}}"
+          ],
+          "path": [
+            "contacts",
+            "{{contactID}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer"
+  },
+  "variable": [
+    {
+      "key": "baseurl",
+      "value": ""
+    },
+    {
+      "key": "getTokenID",
+      "value": ""
+    }
+  ]
+}

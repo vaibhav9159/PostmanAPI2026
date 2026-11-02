@@ -1,0 +1,52 @@
+{
+	"id": "05b04a9f-0519-44bb-a788-a1069c827cbc",
+	"name": "qa",
+	"values": [
+		{
+			"key": "baseurl",
+			"value": "https://thinking-tester-contact-list.herokuapp.com",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "email",
+			"value": "vaibhav@gmail.com",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "password",
+			"value": "shambhu07#",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "baseurl_rest",
+			"value": "https://gorest.co.in",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "baseurlBooking",
+			"value": "https://restful-booker.herokuapp.com",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "emailBooking",
+			"value": "admin",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "PasswordBooking",
+			"value": "password123",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"color": null,
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2026-10-30T14:31:42.989Z",
+	"_postman_exported_using": "Postman/12.34.3"
+}
